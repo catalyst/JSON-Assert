@@ -3,28 +3,28 @@
 use strict;
 use warnings;
 
-use Test::XML::Assert qw(no_plan);
+use Test::JSON::Assert qw(no_plan);
 use FindBin qw($Bin);
 use lib "$Bin";
+use JSON;
 
 require 'data.pl';
 
-my $parser = XML::LibXML->new();
-my $doc = $parser->parse_string( xml() )->documentElement();
+my $json = decode_json( json() );
 
 my $tests_pass = [
    {
-       xpath => '//Error',
+       jpath => '$..Error',
        count => 0,
        name  => 'No error in response',
    },
    {
-       xpath => '//price',
+       jpath => '$..price',
        count => 3,
        name  => 'Three prices found',
    },
 ];
 
 foreach my $t ( @$tests_pass ) {
-    is_xpath_count($doc, {}, $t->{xpath}, $t->{count}, $t->{name} );
+    is_jpath_count($json, $t->{jpath}, $t->{count}, $t->{name} );
 }

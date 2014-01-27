@@ -291,7 +291,7 @@ number of keys.
 Each of these assert methods throws an exception if they are false. Therefore,
 there are equivalent methods which do not die, but instead return a truth
 value. They are does_jpath_count(), does_jpath_value_match() and
-do_xpath_jalues_match().
+do_jpath_values_match().
 
 Note: all of the *_match() methods use the smart match operator C<~~> against
 node to test for truth.
@@ -318,10 +318,27 @@ Calls the above method but catches any error and instead returns a truth value.
 
 =item assert_jpath_value_match($doc, $jpath, $match)
 
-Checks that C<$jpath> returns only one key and that keys's value matches
+Checks that C<$jpath> returns only one key and that the value matches
+C<$match>.
+
+=item does_jpath_value_match($doc, $jpath, $match)
+
+Calls the above method but catches any error and instead returns a truth value.
+
+=item assert_jpath_values_match($doc, $jpath, $match)
+
+Checks that C<$jpath> returns keys and that all the matched values matches
 C<$match>.
 
 =item do_jpath_values_match($doc, $jpath, $match)
+
+Calls the above method but catches any error and instead returns a truth value.
+
+=item assert_json_contains($doc, $jpath, $match)
+
+Checks that C<$jpath> contains the data structure contained within $match.
+
+=item does_jpath_contains($doc, $jpath, $match)
 
 Calls the above method but catches any error and instead returns a truth value.
 

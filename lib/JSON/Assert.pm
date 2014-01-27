@@ -5,6 +5,8 @@ package JSON::Assert;
 
 use Any::Moose;
 use JSON::Path;
+use Test::Deep::NoTest;
+
 $JSON::Path::Safe = 0;
 
 our $VERSION = '0.01';
@@ -174,6 +176,41 @@ sub do_jpath_values_match {
         return;
     }
     return 1;
+}
+
+sub assert_json_contains {
+    my $self = _self(\@_);
+    my ($doc, $jpath_str, $match) = @_;
+
+    my $jpath = _parse_jpath($jpath_str);
+    my @values = $jpath->values($doc);
+
+    if (ref $wanted eq 'HASH') {
+        if (! eq_deeply($values[0], superhashof($match))  {
+            use Data::Dumper;
+            if ($VERBOSE)  {
+                print "wanted: " . Dumper($match) . ", got: " . Dumper ($values[0]) . "\n";
+            }
+
+        }
+    }
+    elsif (ref $wanted eq 'ARRAY') {
+        if (ref $wanted->[0] eq 'HASH') {
+            my @new_wanted = map { superhashof($_) } @$wanted;
+
+            die "JPath '$jpath_str' doesn't match wanted data structure"
+                unless eq_deeply(@values, \@new_wanted);
+        }
+
+        die "JPath '$jpath_str' doesn't match wanted data structure"
+            unless eq_deeply($values[0], $wanted);
+    }
+    else {
+        die "JPath '$jpath_str' doesn't match wanted data structure"
+            unless $values[0] eq $wanted;
+    }
+
+   return 1; 
 }
 
 # private functions

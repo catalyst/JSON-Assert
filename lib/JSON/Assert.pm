@@ -185,8 +185,8 @@ sub assert_json_contains {
     my $jpath = _parse_jpath($jpath_str);
     my @values = $jpath->values($doc);
 
-    if (ref $wanted eq 'HASH') {
-        if (! eq_deeply($values[0], superhashof($match))  {
+    if (ref $match eq 'HASH') {
+        if (! eq_deeply($values[0], superhashof($match))) {
             use Data::Dumper;
             if ($VERBOSE)  {
                 print "wanted: " . Dumper($match) . ", got: " . Dumper ($values[0]) . "\n";
@@ -194,24 +194,38 @@ sub assert_json_contains {
 
         }
     }
-    elsif (ref $wanted eq 'ARRAY') {
-        if (ref $wanted->[0] eq 'HASH') {
-            my @new_wanted = map { superhashof($_) } @$wanted;
+    elsif (ref $match eq 'ARRAY') {
+        if (ref $match->[0] eq 'HASH') {
+            my @new_wanted = map { superhashof($_) } @$match;
 
             die "JPath '$jpath_str' doesn't match wanted data structure"
                 unless eq_deeply(@values, \@new_wanted);
         }
 
         die "JPath '$jpath_str' doesn't match wanted data structure"
-            unless eq_deeply($values[0], $wanted);
+            unless eq_deeply($values[0], $match);
     }
     else {
         die "JPath '$jpath_str' doesn't match wanted data structure"
-            unless $values[0] eq $wanted;
+            unless $values[0] eq $match;
     }
 
    return 1; 
 }
+
+sub does_jpath_contains {
+    my $self = _self(\@_);
+    my ($doc, $jpath_str, $match) = @_;
+
+    $self->_clear_error();
+    eval { $self->assert_jpath_contains($doc, $jpath_str, $match) };
+    if ( $@ ) {
+        $self->error($@);
+        return;
+    }
+    return 1;
+}
+
 
 # private functions
 sub _plural {

@@ -102,6 +102,14 @@ C<$count> is the number of expected keys which match the C<$jpath>.
 
 =item does_jpath_value_match($doc, $jpath, $match, $name)
 
+Test passes if C<$jpath> matches only one key in C<$doc> and the value
+matched smart matches against C<$match>.
+
+Again, C<$match> can be a scalar, regex, arrayref or anything the smart match
+operator can match on.
+
+=item do_jpath_values_match($doc, $jpath, $match, $name)
+
 Test passes if C<$jpath> matches at least one key in C<$doc> and all nodes
 matched smart matches against C<$match>.
 

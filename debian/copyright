@@ -1,14 +1,15 @@
-This is the debian package for the XML-Assert module.
-It was created by Andrew Chilton <andy@catalyst.net.nz> using dh-make-perl.
+This is the debian package for the JSON-Assert module.
+It was created by Andrew Ruthven <puck@catalyst.net.nz> using the Debian
+packaging that was created for libxml-assert-perl.
 
-It was downloaded from http://search.cpan.org/dist/XML-Assert/
+It was downloaded from http://search.cpan.org/dist/JSON-Assert/
 
 This copyright info was automatically extracted from the perl module.
 It may not be accurate, so you better check the module sources
 if you don't want to get into legal troubles.
 
-The upstream author is: Andrew Chilton <andy@catalyst.net.nz>.
+The upstream author is: Andrew Ruthven <puck@catalyst.net.nz>.
 
 
-The Debian packaging is (C) 2010, Andrew Chilton <andy@catalyst.net.nz> and
+The Debian packaging is (C) 2014, Andrew Ruthven <puck@catalyst.net.nz> and
 is licensed under the same terms as the software itself (see above).

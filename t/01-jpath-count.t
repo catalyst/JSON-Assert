@@ -3,66 +3,65 @@
 use strict;
 use warnings;
 use Test::More qw(no_plan);
-use XML::Assert;
-use XML::LibXML;
+use JSON::Assert;
+use JSON;
 use FindBin qw($Bin);
 use lib "$Bin";
 
-# $XML::Assert::VERBOSE = 1;
+$JSON::Assert::VERBOSE = 1;
 
 require 'data.pl';
 
-my $parser = XML::LibXML->new();
-my $doc = $parser->parse_string( xml() )->documentElement();
+my $json = decode_json( json() );
 
 my $tests_ok = [
    {
-       xpath => '//Error',
+       jpath => '$..Error',
        count => 0,
        name  => 'Error in response',
    },
    {
-       xpath => '/catalog/cd',
+       jpath => '$.catalog.cd',
        count => 3,
        name  => 'Three CDs available',
    },
    {
-       xpath => '//cd',
+       jpath => '$..cd',
        count => 3,
        name  => 'Three CDs available everywhere',
    },
    {
-       xpath => '//title',
+       jpath => '$..title',
        count => 3,
        name  => 'Three titles found',
    },
    {
-       xpath => '//rating',
+       jpath => '$..rating',
        count => 2,
        name  => 'Only two ratings',
    },
    {
-       xpath => '//@genre',
+       jpath => '$..genre',
        count => 2,
-       name  => 'Three genres found',
+       name  => 'Two genres found',
    },
 ];
 
 my $tests_fail = [
    {
-       xpath => '//price',
+       jpath => '$..price',
        count => 2,
        name  => 'Three prices, not two',
    },
 ];
 
-my $xml_assert = XML::Assert->new();
+my $json_assert = JSON::Assert->new();
 
 foreach my $t ( @$tests_ok ) {
-    ok( $xml_assert->is_xpath_count($doc, $t->{xpath}, $t->{count}), $t->{name} )
-	    or diag($xml_assert->error);
+    ok( $json_assert->is_jpath_count($json, $t->{jpath}, $t->{count}), $t->{name} )
+	    or diag($json_assert->error);
 }
 
 foreach my $t ( @$tests_fail ) {
-    ok( !$xml_assert->is_xpath_count($doc, $t->{xpath}, $t->{count}), $t->{name} );
+    ok( !$json_assert->is_jpath_count($json, $t->{jpath}, $t->{count}), $t->{name} );
 }

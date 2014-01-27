@@ -1,0 +1,14 @@
+=head1 CHANGELOG FOR XML::Assert
+
+=head2 VERSION 0.01, 22 JANUARY 2014
+
+=over
+
+=item *
+
+Cloned from XML::Assert, with XML specific features removed.
+
+=back
+
+=cut
+

@@ -1,44 +1,42 @@
-XML-Assert      v0.01
-Test-XML-Assert v0.01
-=====================
+JSON-Assert
+Test-JSON-Assert
+================
 
-These two modules help you check that what you expect to be in an XML document
+These two modules help you check that what you expect to be in an JSON document
 is actually there. You can do this via
 
-The XML::Assert module exports the assert() function. This ...
+The JSON::Assert module exports the assert() function. This ...
 
-* xpath_matches( xpath, value, msg );
-* xpath_attr_is( xpath, attribute_name, value, msg ); # surely the xpath can include the @attr ?
-* xpath_text_is( xpath, value, msg );
+* json_match( jpath, count wanted, msg );
+* jpath_is( jpath, value, msg );
 
 Examples:
 
-* xpath_matches( '//NameServers/Server/IPV4Addr', 0, 'NameServer IPv4Addr is not present' )
-* xpath_attr_is( '//TechnicalContact/Fax', 'CountryCode', 64, 'TechnicalContact Fax CountryCode is correct' );
-* xpath_text_is( '//AuditText', 'Audit text s1c1', 'AuditText is correct' );
+* json_matches( '$.NZSRSResponse.Response.Domain', 1, "Response contains one domain record" );
+* jpath_is( '$.NZSRSResponse.Response.Domain', '{ DomainName => "foo.co.te"}', "Response DomainName is foo.co.te" );
 
-EXAMPLE XML ASSERTIONS
-======================
+EXAMPLE JSON ASSERTIONS
+=======================
 
 For example, in the following document, you can assert a number of things, for
-example, that you expect one <content> element in the document, and that it's
+example, that you expect one <content> hash in the document, and that it's
 value is "Hello, World!":
 
-    my $xml = <<'EOF';
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <message type="simple">
-      <!-- comment node -->
-      <content>Hello, World!</content>
-    </message>
+    use JSON;
+
+    my $json = <<'EOF';
+    NZSRSResponse:
+      Response:
+        Domain: foo.co.te
+        Status: Available
     EOF
 
-    my $parser = XML::LibXML->new();
-    my $doc = $parser->parse_string( $xml )->documentElement();
+    my $data = decode_json $json;
    
     my $xml_assert = XML::Assert->new();
 
-    $xml_assert->is_xpath_count($doc, '//content', 1);
-    $xml_assert->does_xpath_value_match($doc, '//content', 'Hello, World!')
+    $xml_assert->is_jpath_count($data, '$.NZSRSResponse.Response.Domain', 1);
+    $xml_assert->does_jpath_value_match($doc, '$.NZSRSResponse.Response.Domain', 'Hello, World!')
 
 INSTALLATION
 ============
@@ -55,28 +53,24 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-XML::LibXML (>= 1.70)
 Test::Simple (Test::More/Test::Builder -- core)
 
 AUTHOR, COPYRIGHT AND LICENCE
 =============================
 
-Written by Andrew Chilton:
+Written by Andrew Ruthven:
 
-* andychilton@gmail.com
-* andy@catalyst.net.nz
+* andrew@etc.gen.nz
+* puck@catalyst.net.nz
 
-Hacked on by Sam Vilain:
-
-* sam@vilain.net
-* samv@catalyst.net.nz
+Based on XML::Assert by Andrew Chilton.
 
 This software development is sponsored and directed by New Zealand Registry
 Services, http://www.nzrs.net.nz/
 
 The work is being carried out by Catalyst IT, http://www.catalyst.net.nz/
 
-Copyright (c) 2009, NZ Registry Services.  All Rights Reserved.  This software
+Copyright (c) 2014, NZ Registry Services.  All Rights Reserved.  This software
 may be used under the terms of the Artistic License 2.0.  Note that this
 license is compatible with both the GNU GPL and Artistic licenses.  A copy of
 this license is supplied with the distribution in the file COPYING.txt.

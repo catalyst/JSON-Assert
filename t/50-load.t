@@ -3,10 +3,10 @@
 use Test::More tests => 3;
 
 BEGIN {
-    use_ok( 'Test::XML::Assert');
+    use_ok( 'Test::JSON::Assert');
 }
 
-can_ok('Test::XML::Assert', 'is_xpath_count');
-can_ok('Test::XML::Assert', 'does_xpath_value_match');
+can_ok('Test::JSON::Assert', 'is_jpath_count');
+can_ok('Test::JSON::Assert', 'does_jpath_value_match');
 
-diag( "Tested Test::XML::Compare $Test::XML::Compare::VERSION, Perl $], $^X, XML::LibXML $XML::LibXML::VERSION" );
+diag( "Tested Test::JSON::Compare $Test::JSON::Compare::VERSION, Perl $], $^X, JSON $JSON::VERSION" );

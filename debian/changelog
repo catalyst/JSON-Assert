@@ -1,5 +1,5 @@
 libjson-assert-perl (0.01) unstable; urgency=medium
 
-  * Initial Release. NAsed on XML::Assert by Andrew Chilton.
+  * Initial Release. Based on XML::Assert by Andrew Chilton.
 
  -- Andrew Ruthven <puck@catalyst.net.nz>  Mon, 27 Jan 2014 13:21:56 +1300
